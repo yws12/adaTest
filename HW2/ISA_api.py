@@ -74,7 +74,7 @@ MASTER_PERIODS = [
     'Master semestre 2',
     'Master semestre 3',
     'Projet Master automne',
-    'Projet Master printemps'
+    'Projet Master printemps',
 ]
 
 def get_filter_value():
@@ -95,7 +95,7 @@ def get_filter_value():
     new_param = DEFAULT_PARAMS.copy()
     new_param.pop('ww_b_list')
     res = requests.get(url, headers=HEADERS, params=new_param)
-    html = BeautifulSoup(res.text)
+    html = BeautifulSoup(res.text,'lxml')
     # get all values for all options in 4 select tags
     for dict_name, html_name in NAME_MAP.items():
         # find all options first
@@ -130,7 +130,7 @@ def get_GPS_code(filter_values, **filters):
             params[NAME_MAP[k]] = filter_values[k][v]
 
         res = requests.get(url, headers=HEADERS, params=params)
-        html = BeautifulSoup(res.text)
+        html = BeautifulSoup(res.text,'lxml')
         gps_elements = html.find_all('a', class_='ww_x_GPS')
 
         for e in gps_elements[1:]:  # remove the first one, Tous
@@ -161,7 +161,7 @@ def get_student_table(gps_codes):
         # add gps code to request parameter
         params.update({'ww_x_GPS': code})
         res = requests.get(url, headers=HEADERS, params=params)
-        html = BeautifulSoup(res.text)
+        html = BeautifulSoup(res.text,'lxml')
 
         student_table = html.find('table').find_all('tr')[2:]  # remove first two header rows
         stduent_list = []
