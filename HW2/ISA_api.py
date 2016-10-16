@@ -162,7 +162,6 @@ def get_student_table(gps_codes):
         params.update({'ww_x_GPS': code})
         res = requests.get(url, headers=HEADERS, params=params)
         html = BeautifulSoup(res.text,'lxml')
-
         student_table = html.find('table').find_all('tr')[2:]  # remove first two header rows
         stduent_list = []
 
